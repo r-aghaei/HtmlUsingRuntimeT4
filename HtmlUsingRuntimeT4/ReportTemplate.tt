@@ -1,0 +1,48 @@
+﻿<#@ template language="C#"#>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ parameter name="Model" type="HtmlUsingRuntimeT4.ReportModel"#>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        body { font-family: Calibri;width:400px;}
+        table { text-align:center; }
+        .container {width:400px; height:100%;}
+    </style>
+</head>
+<body>
+<div class="container">
+<h1 style="text-align:center;">Order</h1>
+<hr/>
+<table style="width:100%">
+    <tr>
+        <td>Customer: <#=Model.CustomerName#></td>
+        <td>Order Date: <#=Model.Date#></td>
+    </tr>
+</table>
+<hr/>
+<table style="width:100%">
+    <tr><th>Index</th><th>Name</th><th>Price</th><th>Count</th><th>Sum</th></tr>
+    <#
+    int index =1;
+    foreach(var item in Model.OrderItems) 
+    {
+    #>
+    <tr>
+        <td><#=index#></td>
+        <td><#=item.Name#></td>
+        <td><#=item.Price#></td>
+        <td><#=item.Count#></td>
+        <td><#=item.Count * item.Price#></td>
+    </tr>
+    <#
+        index++;
+    }
+    var total= Model.OrderItems.Sum(x=>x.Count * x.Price);
+    #>
+    <tr><td></td><td></td><td></td><th>Total:</th><th><#=total#></th></tr>
+</table>
+<div>
+</body>
+</html>
